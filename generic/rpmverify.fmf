@@ -1,0 +1,17 @@
+# used in
+# https://gitlab.com/redhat/centos-stream/rpms/rsyslog/-/tree/c10s
+
+summary: rpmverify test
+
+execute:
+    how: tmt
+
+discover:
+
+  - name: test
+    how: shell
+    tests:
+      - name: rpmverify
+        test: 'rpmverify $(rpm -qa | grep rsyslog)'
+        duration: 2m
+

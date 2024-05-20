@@ -1,0 +1,57 @@
+# used in
+# https://gitlab.com/redhat/centos-stream/rpms/rsyslog/-/tree/c10s
+summary: test plan for rsyslog gating testing
+
+
+prepare:
+  - how: shell
+    script:
+     - systemctl disable --now dnf-makecache.service || true
+     - systemctl disable --now dnf-makecache.timer || true
+     - dnf makecache
+
+discover:
+  - name: Upstream_tests_rsyslog
+    how: fmf
+    url: https://github.com/RedHat-SP-Security/rsyslog-tests
+    ref: master
+    filter: component:rsyslog & tag:CI-Tier-1
+    test:
+      - /Sanity/basic-logging-facility/old-syntax
+      - /Sanity/bz1932795-rebase-to-2102
+      - /Sanity/bz672182-RFE-Provide-multi-line-message-capability/old-syntax
+      - /Sanity/bz672182-RFE-Provide-rate-limiting-support/new-syntax
+      - /Sanity/capabilities-drop
+      - /Sanity/config-enabled
+      - /Sanity/gnutls-openssl/interoperability
+      - /Sanity/gnutls-openssl/ossl
+      - /Sanity/imfile-module-test/new-syntax
+      - /Sanity/imfile-module-test/old-syntax
+      - /Sanity/imrelp-omrelp-module-test
+      - /Sanity/imtcp-module-test/old-syntax
+      - /Sanity/mmfields-module-test
+      - /Sanity/mmnormalize-module-test
+#     - /Sanity/omfile-module-test/newSyntax
+#     - /Sanity/omfile-module-test/oldSyntax
+      - /Sanity/ompipe-module-test
+      - /Sanity/omudpspoof-module-test
+      - /Sanity/test-various-configuration-directives/new-syntax
+#      - /Sanity/various-simple-checks
+      - /Regression/bz1419228-rsyslog-imjournal-module-no-longer-receives-logs
+      - /Regression/bz1763746-rsyslog-doesn-t-read-lines-from-imfile-after
+      - /Regression/bz1843992-rsyslog-dies-at-startup-when-imfile-top
+      - /Regression/bz1858297-Repeated-buffer-overflow-detected
+      - /Regression/bz1866877-parsing-msg
+      - /Regression/bz1880434-gnutls-shutdown
+      - /Regression/bz1886400-gnutls-shutdown-relp
+      - /Regression/bz1909639-imfile-leaves-state-files-behind
+      - /Regression/bz1944718-large-group
+      - /Regression/bz1960536-imjournal-fsync-fd-leak
+      - /Regression/bz1962318-errfile-maxsize
+      - /Regression/bz2052403-remove-wd-on-filemove
+#      - /Regression/bz654379-service-rsyslog-start-cat-hangs
+
+#disable flaky test for now
+
+execute:
+  how: tmt
