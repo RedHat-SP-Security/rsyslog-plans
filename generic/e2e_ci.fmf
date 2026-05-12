@@ -50,6 +50,19 @@ discover:
       - /Regression/bz1962318-errfile-maxsize
       - /Regression/bz2052403-remove-wd-on-filemove
 #      - /Regression/bz654379-service-rsyslog-start-cat-hangs
+      - /‎Sanity/imkafka-granular-metrics
+      - ‎‎/Sanity/impstats-zabbix-lld
+
+  - name: Downstream_tests_rsyslog
+    how: fmf
+    url: https://gitlab.cee.redhat.com/special-projects/tests/rsyslog
+    ref: master
+    filter: component:rsyslog & tag:CI-Tier-1
+    test:
+      -  /Regression/imfile-deleted-file-not-released
+      -  /Sanity/SAN
+      -  /Sanity/TlsRevocationCheck
+      -  /Sanity/omelasticsearch-ipv6
 
 #disable flaky test for now
 
